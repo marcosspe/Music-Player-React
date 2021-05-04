@@ -141,20 +141,23 @@ export function Home() {
 	]);
 
 	const items = songList.map((element, id) => (
-		<tr key={id} onClick={() => cambiarCancion(element.url)}>
+		<tr key={id} onClick={() => cambiarCancion(id)}>
 			<th scope="row">{element.id}</th>
 			<td>{element.name}</td>
 		</tr>
 	));
 
 	const [icono, setIcono] = useState(true);
+	const [posActual, setPosActual] = useState(0);
 
 	let cancion = useRef();
 
-	const cambiarCancion = url => {
-		cancion.current.src = "https://assets.breatheco.de/apis/sound/" + url;
+	const cambiarCancion = pos => {
+		cancion.current.src =
+			"https://assets.breatheco.de/apis/sound/" + songList[pos].url;
 		cancion.current.play();
 		setIcono(false);
+		setPosActual(pos);
 	};
 
 	const playPausa = () => {
@@ -176,11 +179,21 @@ export function Home() {
 
 			<nav className="navbar navbar-light bg-dark fixed-bottom d-flex justify-content-center">
 				<div className="navbar-brand mb-0 h1">
-					<i className="fas fa-step-backward mr-2"></i>
-					<i
-						className={icono ? "fas fa-play" : "fas fa-pause"}
-						onClick={() => playPausa()}></i>
-					<i className="fas fa-step-forward ml-2"></i>
+					<button>
+						<i
+							className="fas fa-step-backward pr-2"
+							onClick={() => cambiarCancion(posActual - 1)}></i>
+					</button>
+					<button>
+						<i
+							className={icono ? "fas fa-play" : "fas fa-pause"}
+							onClick={() => playPausa()}></i>
+					</button>
+					<button>
+						<i
+							className="fas fa-step-forward pl-2"
+							onClick={() => cambiarCancion(posActual + 1)}></i>
+					</button>
 				</div>
 			</nav>
 		</div>
