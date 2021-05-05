@@ -6,6 +6,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 //create your first component
 export function Home() {
 	const [songList, setSongList] = useState([]);
+	const [color, setColor] = useState([]);
 
 	const obtenerCanciones = async () => {
 		try {
@@ -24,7 +25,7 @@ export function Home() {
 	}, []);
 
 	const items = songList.map((element, id) => (
-		<tr key={id} onClick={() => cambiarCancion(id)}>
+		<tr className={color[id]} key={id} onClick={() => cambiarCancion(id)}>
 			<th scope="row">{element.id}</th>
 			<td>{element.name}</td>
 		</tr>
@@ -36,11 +37,15 @@ export function Home() {
 	let cancion = useRef();
 
 	const cambiarCancion = pos => {
-		if (pos == 0) {
-			pos == 0;
+		if (pos < 0) {
+			pos = 0;
 		} else if (pos >= songList.length) {
-			pos == 0;
+			pos = 0;
 		}
+
+		let pintar = [];
+		pintar[pos] = "song";
+		setColor(pintar);
 
 		cancion.current.src =
 			"https://assets.breatheco.de/apis/sound/" + songList[pos].url;
